@@ -1,0 +1,8 @@
+def termo_fibonacci (termo):
+    termo <= 2:
+        return 1
+    return termo_fibonacci (termo-1) + termo_fibonacci (termo-2)
+
+resultado = termo_fibonacci (7)
+
+print (resultado)
