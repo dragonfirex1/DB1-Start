@@ -1,0 +1,65 @@
+import json
+from os.path import exists
+import random
+from os.path import dirname
+
+def cadastrar():
+    nome = input("\nNome do produto: ")
+    qtdEstoque = input("Quantidade do produto: ")
+    vlr_de_custo = input("Custo do produto: ")
+    vlr_de_venda = input("Venda do produto: ")
+    #Apos inputar a quantidade e os nomes, a função anterior cod vai aqui escolher um numero e adicionar ao arquivo
+    cod = random.randint(1,10)
+    #Aqui coloquei para enumerar e criar o cod dos produtos
+    produto = {
+      
+        cod: {
+            "Nome": nome,  
+            "Quantidade Disponivel": qtdEstoque,
+            "Valor de Custo": vlr_de_custo,
+            "Valor da Venda": vlr_de_venda
+        }
+    }
+#Diretorio que o arquivo sera criado
+
+    arquivo = dirname(__file__)+"/dados/"+str(cod)+".json"
+#Abrindo a pasta acima para adicionar o arquivo
+    arquivo = open(arquivo, "a")
+    json.dump(produto, arquivo, indent=4)
+#Fechando o arquivo    
+    arquivo.close()
+
+def imprimir():
+    print("\nCód\tNome\t\tQtd\tCusto\tVenda")
+    print("________________________________________________")
+#Mostrar na tela quando chamado no menu loop abaixo o que ja temos nos dados
+    cod = 1
+    while cod <= 10:
+        arquivo = dirname(__file__)+"/dados/"+str(cod)+".json"
+#Localizando os dados que ja criamos no menu
+        if exists (arquivo):
+            with open(arquivo, encoding='utf-8') as arquivo:
+                dados = json.load(arquivo)
+#Imprimindo os dados em forma de lista
+            for i in dados:
+                print(i, "\t",dados[i]['Nome'], "\t\t",dados[i]['Quantidade Disponivel'], "\t",dados[i]['Valor de Custo'], "\t",dados[i]['Valor da Venda'])
+            
+            arquivo.close()
+        cod = cod+1
+#Encerra o loop e fecha o arquivo que retirou os dados
+def menu():
+	while(True):
+#Enquanto verdade usamos as 3 opções para interagir com nossos dados
+		opcmenu = input(str("\n1 - Adicionar produto\n"
+					  "2 - Mostrar produtos\n"
+					  "0 - Fechar\n\n"))
+		if opcmenu =="1":
+			cadastrar()
+		elif opcmenu =="2":
+			imprimir()
+		elif opcmenu =="0":
+			break
+		else:
+			print("\nOpção inválida!\n")
+#Inicia aqui o codigo com o menu na tela!
+menu()
